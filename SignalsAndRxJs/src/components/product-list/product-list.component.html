@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="card-header">
+   <input #searchInput type="text" placeholder="Search products..." (input)="onSearch(searchInput?.value)" />
+  </div>
+
+  <div class="product-list__container">
+    <div class="product-list__list-wrapper">
+      @for (product of products$ | async; track product.id) {
+      <div [class.product-list__product--selected]="product.id === selectedProduct?.id"
+           class="product-list__product"
+           (click)="onSelectProduct(product)">
+        {{ product.name }} - {{ product.price | currency }}
+      </div>
+      }
+      @empty {
+      <div>No products available.</div>
+      }
+    </div>
+
+    @if (selectedProduct != null) {
+    <div class="product-list__selected-product-details">
+     <product-component></product-component>
+    </div>
+    }
+  </div>
+
+  <!-- <div class="card-body" *ngIf="vehicles()">
+    <div class="list-group">
+      <button
+        type="button"
+        class="list-group-item"
+        *ngFor="let vehicle of vehicles()"
+        [ngClass]="{ active: vehicle.name === selectedVehicle()?.name }"
+        (click)="onSelected(vehicle.name)"
+      >
+        {{ vehicle.name }}
+      </button>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+</div> -->

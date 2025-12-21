@@ -1,0 +1,25 @@
+:host {
+    .product-list {
+        &__container{
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            width: 100%;
+            border: 1px solid red;
+        }
+
+        &__list-wrapper {
+            flex-direction: column;
+            width: 50%;
+        }
+
+        &__product--selected{
+            background-color: blue;
+            color: white;
+        }
+
+        &__selected-product-details{}
+    }
+
+    
+}

@@ -1,0 +1,64 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Mechanical Keyboard",
+      "price": 129.99,
+      "description": "A high-quality mechanical keyboard with tactile switches and customizable RGB backlighting."
+    },
+    {
+      "id": 2,
+      "name": "Wireless Mouse",
+      "price": 59.99,
+      "description": "Ergonomic wireless mouse with adjustable DPI and long battery life."
+    },
+    {
+      "id": 3,
+      "name": "27-inch Monitor",
+      "price": 299.99,
+      "description": "27-inch Full HD monitor with IPS panel for accurate colors and wide viewing angles."
+    },
+    {
+      "id": 4,
+      "name": "USB-C Docking Station",
+      "price": 149.99,
+      "description": "Multi-port USB-C docking station with HDMI, Ethernet, USB, and power delivery support."
+    },
+    {
+      "id": 5,
+      "name": "External SSD 1TB",
+      "price": 179.99,
+      "description": "Portable 1TB external SSD with fast read and write speeds for backups and file transfers."
+    },
+    {
+      "id": 6,
+      "name": "Gaming Headset",
+      "price": 89.99,
+      "description": "Over-ear gaming headset with surround sound and noise-canceling microphone."
+    },
+    {
+      "id": 7,
+      "name": "Webcam 1080p",
+      "price": 74.99,
+      "description": "Full HD 1080p webcam ideal for video conferencing and online streaming."
+    },
+    {
+      "id": 8,
+      "name": "Laptop Stand",
+      "price": 39.99,
+      "description": "Adjustable aluminum laptop stand that improves ergonomics and airflow."
+    },
+    {
+      "id": 9,
+      "name": "Wi-Fi Router",
+      "price": 119.99,
+      "description": "Dual-band Wi-Fi router providing fast and stable internet connection for home and office use."
+    },
+    {
+      "id": 10,
+      "name": "Power Supply Unit 750W",
+      "price": 109.99,
+      "description": "750W power supply unit with high efficiency and reliable performance for desktop PCs."
+    }
+  ]
+}
