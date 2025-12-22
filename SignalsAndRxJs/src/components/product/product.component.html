@@ -37,3 +37,15 @@
     </div>
   </div>
 </ng-container> -->
+
+<div class="product__container">
+  <div class="product__header">
+    <h3>Product details</h3>
+    <button matButton="filled" (click)="addToCart()">Add to Cart</button>
+  </div>
+  <div class="product__details-wrapper">
+    <span>Name: {{ (product$ | async)?.name }}</span>
+    <span>Price: {{ (product$ | async)?.price | currency }}</span>
+    <span>Description: {{ (product$ | async)?.description }}</span>
+  </div>
+</div>

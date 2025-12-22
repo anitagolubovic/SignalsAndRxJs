@@ -1,5 +1,18 @@
-<div>
-  <product-list-component></product-list-component>
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" [routerLinkActive]="activeLink">
+  @for(link of navLinks; track link.path) {
+  <a
+    mat-tab-link
+    [routerLink]="link.path"
+    routerLinkActive
+    #rla="routerLinkActive"
+    [active]="rla.isActive"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    {{ link.label }}
+  </a>
+  }
+</nav>
+
+<mat-tab-nav-panel #tabPanel>
   <router-outlet></router-outlet>
-  <!--  <li><a class="nav-link" routerLink="/cart">Cart</a></li> -->
-</div>
+</mat-tab-nav-panel>

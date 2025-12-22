@@ -1,0 +1,21 @@
+:host {
+    .product {
+        &__container{
+            padding: 10px;
+
+        }
+
+        &__header {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        &__details-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+}

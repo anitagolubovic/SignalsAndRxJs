@@ -11,10 +11,10 @@ export class ProductService {
   private apiUrl = 'http://localhost:3000/products';
   selectedProductChanged = new BehaviorSubject<Maybe<Product>>(null);
   productQuery = new BehaviorSubject<string>('');
-  
+  orderedProducts: Product[] = [];
+  productOrderChanged = new BehaviorSubject<Product[]>([]);
 
   constructor(private http: HttpClient) {}
-
 
   getProducts$(): Observable<Product[]> {
     const products$ = this.http.get<Product[]>(this.apiUrl);
@@ -37,5 +37,9 @@ export class ProductService {
 
   selectProduct(product: Maybe<Product>): void {
     this.selectedProductChanged.next(product);
+  }
+
+  addToCart(product: Product): void {
+    this.productOrderChanged.next([...this.orderedProducts, product]);
   }
 }

@@ -6,6 +6,7 @@
             height: 100%;
             width: 100%;
             border: 1px solid red;
+            
         }
 
         &__list-wrapper {
@@ -14,11 +15,19 @@
         }
 
         &__product--selected{
-            background-color: blue;
+            background-color: #1E90FF;
             color: white;
         }
 
-        &__selected-product-details{}
+        &__product {
+            height: 30px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #d3d3d3;
+            justify-content: center;
+          
+        }
     }
 
     
