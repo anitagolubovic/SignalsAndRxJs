@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
 import { Product } from '../models/product';
 import { Maybe } from '../../ts-utilis/maybe.type';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({
   providedIn: 'root',
@@ -16,15 +17,17 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts$(): Observable<Product[]> {
+  getProducts(): Signal<Product[]> {
     const products$ = this.http.get<Product[]>(this.apiUrl);
-    return combineLatest([products$, this.productQuery.asObservable()]).pipe(
+    const filteredProducts$ = combineLatest([products$, this.productQuery.asObservable()]).pipe(
       map(([products, query]) => {
         return products.filter((product) =>
           product.name.toLowerCase().includes(query.toLowerCase())
         );
       })
     );
+    return toSignal(filteredProducts$, {initialValue: []})
+    
   }
 
   getProductById$(id: number): Observable<Product> {

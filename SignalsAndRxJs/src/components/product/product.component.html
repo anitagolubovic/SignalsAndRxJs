@@ -38,14 +38,17 @@
   </div>
 </ng-container> -->
 
-<div class="product__container">
-  <div class="product__header">
-    <h3>Product details</h3>
-    <button matButton="filled" (click)="addToCart()">Add to Cart</button>
-  </div>
-  <div class="product__details-wrapper">
+<mat-card class="product__container" appearance="outlined">
+  <mat-card-header class="product__header">
+    <mat-card-title>Product details</mat-card-title>
+    <img mat-card-sm-image [src]="(product$ | async)?.imgSrc"  width="55" height="55" alt="image" priority/>
+  </mat-card-header>
+  <mat-card-content class="product__details-wrapper">
     <span>Name: {{ (product$ | async)?.name }}</span>
     <span>Price: {{ (product$ | async)?.price | currency }}</span>
     <span>Description: {{ (product$ | async)?.description }}</span>
-  </div>
-</div>
+  </mat-card-content>
+  <mat-card-actions class="product__button">
+    <button matButton="tonal" (click)="addToCart()">Add to Cart</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,34 +1,65 @@
 :host {
-    .product-list {
-        &__container{
-            display: flex;
-            flex-direction: row;
-            height: 100%;
-            width: 100%;
-            border: 1px solid red;
-            
-        }
-
-        &__list-wrapper {
-            flex-direction: column;
-            width: 50%;
-        }
-
-        &__product--selected{
-            background-color: #1E90FF;
-            color: white;
-        }
-
-        &__product {
-            height: 30px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            border: 1px solid #d3d3d3;
-            justify-content: center;
-          
-        }
+  .product-list {
+    &__container {
+      display: flex;
+      flex-direction: column;
     }
 
-    
+    &__search {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: end;
+      padding-top: 5px;
+
+      &-input {
+        width: 300px;
+        margin-bottom: 16px;
+      }
+
+      &-pattern-and-icon {
+        display: flex !important;
+        //flex-direction: row !important;
+        //width: 100% !important;
+      }
+    }
+
+    &__list-and-details {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      width: 100%;
+      justify-content: space-around;
+    }
+
+    &__list-wrapper {
+      flex-direction: column;
+      width: 35%;
+    }
+
+    &__product--selected {
+      background-color: #1e90ff;
+      color: white;
+    }
+
+    &__product-item {
+      height: 30px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #d3d3d3;
+      justify-content: center;
+      width: 100%;
+      display: flex;
+      flex: 1;
+    }
+
+    &__selected-product-details {
+      width: 60%;
+    }
+  }
+
+  ::ng-deep.mat-mdc-card-header {
+    display: unset;
+  }
 }

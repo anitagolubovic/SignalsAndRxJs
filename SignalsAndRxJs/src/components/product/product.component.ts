@@ -6,12 +6,13 @@ import { Observable, of } from 'rxjs';
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { isDefined } from '../../ts-utilis/predicates.helper';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCard, MatCardHeader, MatCardContent, MatCardSmImage, MatCardActions, MatCardTitle } from '@angular/material/card';
 
 @Component({
   selector: 'product-component',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss'],
-  imports: [AsyncPipe, CurrencyPipe, MatButtonModule],
+  imports: [AsyncPipe, CurrencyPipe, MatButtonModule, MatCard, MatCardHeader, MatCardContent, MatCardSmImage, MatCardActions, MatCardTitle],
 })
 export class ProductComponent implements OnInit {
   product: Maybe<Product> = null;
