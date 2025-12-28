@@ -1,48 +1,46 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Signal } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
+import { Injectable, signal, Signal } from '@angular/core';
+import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
 import { Product } from '../models/product';
 import { Maybe } from '../../ts-utilis/maybe.type';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Dictionary } from '../../ts-utilis/dictionary.type';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
   private apiUrl = 'http://localhost:3000/products';
-  selectedProductChanged = new BehaviorSubject<Maybe<Product>>(null);
-  productQuery = new BehaviorSubject<string>('');
-  orderedProducts: Product[] = [];
-  productOrderChanged = new BehaviorSubject<Product[]>([]);
+  allProducts = signal<Product[]>([]);
+  filteredProducts = signal<Product[]>([]);
+  selectedProduct = signal<Maybe<Product>>(null);
+  searchPattern = signal<string>('');
+  orders = signal<Product[]>([]);
 
   constructor(private http: HttpClient) {}
 
   getProducts(): Signal<Product[]> {
     const products$ = this.http.get<Product[]>(this.apiUrl);
-    const filteredProducts$ = combineLatest([products$, this.productQuery.asObservable()]).pipe(
+    const filteredProducts$ = combineLatest([products$, toObservable(this.searchPattern)]).pipe(
       map(([products, query]) => {
+        this.allProducts.set(products);
         return products.filter((product) =>
           product.name.toLowerCase().includes(query.toLowerCase())
         );
       })
     );
-    return toSignal(filteredProducts$, {initialValue: []})
-    
-  }
-
-  getProductById$(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+    return toSignal(filteredProducts$, { initialValue: [] });
   }
 
   onSearchUpdated(query: string): void {
-    this.productQuery.next(query);
+    this.searchPattern.set(query);
   }
 
   selectProduct(product: Maybe<Product>): void {
-    this.selectedProductChanged.next(product);
+    this.selectedProduct.set(product);
   }
 
-  addToCart(product: Product): void {
-    this.productOrderChanged.next([...this.orderedProducts, product]);
+  getProductById(id: number): Maybe<Product> {
+    return this.allProducts().find((product) => product.id === id);
   }
 }

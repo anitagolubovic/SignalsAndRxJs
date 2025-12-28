@@ -38,8 +38,9 @@
     }
 
     &__product--selected {
-      background-color: #1e90ff;
-      color: white;
+      // background-color: #1e90ff;
+      // color: white;
+      // border-radius: 15%;
     }
 
     &__product-item {
@@ -52,6 +53,8 @@
       width: 100%;
       display: flex;
       flex: 1;
+
+
     }
 
     &__selected-product-details {
@@ -61,5 +64,21 @@
 
   ::ng-deep.mat-mdc-card-header {
     display: unset;
+  }
+}
+
+mat-card-header {
+  &:has(.product-list__product-item) {
+    &:hover {
+      background-color: #dae2f9;
+      cursor: pointer;
+    }
+
+  }
+
+  &.product-list__product--selected {
+    background-color: #1e90ff;
+    color: white;
+   
   }
 }

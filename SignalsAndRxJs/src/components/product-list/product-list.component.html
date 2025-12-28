@@ -3,13 +3,7 @@
     <mat-form-field class="product-list__search-input">
       <mat-label>Search products</mat-label>
       <div class="product_list__search-pattern-and-icon">
-        <input
-          matInput
-          type="text"
-          [(ngModel)]="searchPattern"
-          (ngModelChange)="onSearch(searchPattern)"
-        />
-       
+        <input matInput type="text" [value]="searchPattern()" (input)="pattern$.next($event.target.value)" />
       </div>
     </mat-form-field>
   </div>
@@ -17,19 +11,16 @@
   <div class="product-list__list-and-details">
     <mat-card class="product-list__list-wrapper">
       @for (product of products(); track product.id) {
-      <mat-card-header [class.product-list__product--selected]="product.id === (selectedProduct$ | async)?.id">
-        <mat-card-title 
-        class="product-list__product-item"
-        (click)="onSelectProduct(product)">{{ product.name }}</mat-card-title>
+      <mat-card-header [class.product-list__product--selected]="product.id === (selectedProduct())?.id">
+        <mat-card-title class="product-list__product-item" (click)="onSelectProduct(product)">{{ product.name
+          }}</mat-card-title>
       </mat-card-header>
-     
-
       } @empty {
       <div>No products available.</div>
       }
     </mat-card>
 
-    @if ((selectedProduct$ | async) != null) {
+    @if (selectedProduct() != null) {
     <product-component class="product-list__selected-product-details"></product-component>
     }
   </div>

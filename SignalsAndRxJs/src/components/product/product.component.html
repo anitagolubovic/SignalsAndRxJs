@@ -1,54 +1,16 @@
-<!-- <ng-container *ngIf="vehicle() != null">
-  <div class="card">
-    <div class="card-header">
-      {{pageTitle()}}
-    </div>
-
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-3">Name:</div>
-        <div class="col-md-6 col-sm-3">{{vehicle().name}}</div>
-        <div class="col-md-3">
-          <button class='btn btn-primary' (click)='addToCart(vehicle())'>Add to Cart
-          </button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">Classification:</div>
-        <div class="col-md-6">{{vehicle().vehicle_class}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">Price (in credits):</div>
-        <div class="col-md-6">{{vehicle().cost_in_credits | number:'1.2-2'}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">Crew:</div>
-        <div class="col-md-6">{{vehicle().crew}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">Passengers:</div>
-        <div class="col-md-6">{{vehicle().passengers}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3">Cargo Capacity:</div>
-        <div class="col-md-6">{{vehicle().cargo_capacity}}</div>
-      </div>
-
-    </div>
-  </div>
-</ng-container> -->
-
+@if(product() != null) {
 <mat-card class="product__container" appearance="outlined">
   <mat-card-header class="product__header">
     <mat-card-title>Product details</mat-card-title>
-    <img mat-card-sm-image [src]="(product$ | async)?.imgSrc"  width="55" height="55" alt="image" priority/>
+    <img mat-card-sm-image [src]="product()?.imgSrc" width="55" height="55" alt="image" priority />
   </mat-card-header>
   <mat-card-content class="product__details-wrapper">
-    <span>Name: {{ (product$ | async)?.name }}</span>
-    <span>Price: {{ (product$ | async)?.price | currency }}</span>
-    <span>Description: {{ (product$ | async)?.description }}</span>
+    <span>Name: {{ product()?.name }}</span>
+    <span>Price: {{ product()?.price | currency }}</span>
+    <span>Description: {{ product()?.description }}</span>
   </mat-card-content>
   <mat-card-actions class="product__button">
     <button matButton="tonal" (click)="addToCart()">Add to Cart</button>
   </mat-card-actions>
 </mat-card>
+}
