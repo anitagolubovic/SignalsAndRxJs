@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal, Signal } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, Observable, of } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { Product } from '../models/product';
 import { Maybe } from '../../ts-utilis/maybe.type';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Dictionary } from '../../ts-utilis/dictionary.type';
 
 @Injectable({
   providedIn: 'root',
@@ -12,10 +11,8 @@ import { Dictionary } from '../../ts-utilis/dictionary.type';
 export class ProductService {
   private apiUrl = 'http://localhost:3000/products';
   allProducts = signal<Product[]>([]);
-  filteredProducts = signal<Product[]>([]);
   selectedProduct = signal<Maybe<Product>>(null);
   searchPattern = signal<string>('');
-  orders = signal<Product[]>([]);
 
   constructor(private http: HttpClient) {}
 

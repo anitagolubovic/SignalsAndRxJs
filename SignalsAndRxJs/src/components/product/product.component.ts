@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { ProductService } from '../../app/services/product.service';
 import { Product } from '../../app/models/product';
 import { Maybe } from '../../ts-utilis/maybe.type';
@@ -34,8 +34,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ProductComponent {
   private productService = inject(ProductService);
   private orderService = inject(OrderService);
-  product: Signal<Maybe<Product>> = this.productService.selectedProduct;
   private _snackBar = inject(MatSnackBar);
+  product: Signal<Maybe<Product>> = this.productService.selectedProduct;
 
   addToCart(): void {
     if (isDefined(this.product())) {

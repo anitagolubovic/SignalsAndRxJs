@@ -1,20 +1,25 @@
 <mat-card class="cart__container">
-  <mat-card-subtitle (click)="continueShopping()" class="cart__continue-shopping-label">Continue Shopping</mat-card-subtitle>
+  <mat-card-subtitle (click)="continueShopping()" class="cart__continue-shopping-label"
+    >Continue Shopping</mat-card-subtitle
+  >
   <mat-card class="cart__header" appearance="outlined">
     <mat-card-title>Shopping Cart</mat-card-title>
   </mat-card>
 
   <mat-card class="cart__details-wrapper">
     <mat-card-content class="cart__items">
-      @if(orderItems().length > 0) {
-      @for(order of orderItems(); track order.product?.id) {
+      @if(orderItems().length > 0) { @for(order of orderItems(); track order.product?.id) {
       <mat-card-subtitle class="cart__item">
         <span class="cart__item-name">{{ order.product.name }}</span>
         <div>
-          <input type="number" [value]="order.quantity" (input)="onQuantityChange(order.product, $event.target.value)"
-            [min]="0" />
+          <input
+            type="number"
+            [value]="order.quantity"
+            (input)="onQuantityChange(order.product, $event.target.value)"
+            [min]="0"
+          />
         </div>
-       <mat-icon  (click)="removeItem(order)">delete</mat-icon>
+        <mat-icon (click)="applyOrderItemUpdate(order)">delete</mat-icon>
       </mat-card-subtitle>
       } @empty {
       <span>Your cart is empty.</span>

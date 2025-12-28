@@ -6,7 +6,6 @@
     }
 
     &__search {
-      width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: end;
@@ -14,33 +13,17 @@
 
       &-input {
         width: 300px;
-        margin-bottom: 16px;
-      }
-
-      &-pattern-and-icon {
-        display: flex !important;
-        //flex-direction: row !important;
-        //width: 100% !important;
+        margin-bottom: 20px;
       }
     }
 
     &__list-and-details {
       display: flex;
-      flex-direction: row;
-      height: 100%;
-      width: 100%;
       justify-content: space-around;
     }
 
     &__list-wrapper {
-      flex-direction: column;
       width: 35%;
-    }
-
-    &__product--selected {
-      // background-color: #1e90ff;
-      // color: white;
-      // border-radius: 15%;
     }
 
     &__product-item {
@@ -50,11 +33,6 @@
       align-items: center;
       border-bottom: 1px solid #d3d3d3;
       justify-content: center;
-      width: 100%;
-      display: flex;
-      flex: 1;
-
-
     }
 
     &__selected-product-details {
@@ -73,12 +51,10 @@ mat-card-header {
       background-color: #dae2f9;
       cursor: pointer;
     }
-
   }
 
   &.product-list__product--selected {
     background-color: #1e90ff;
     color: white;
-   
   }
 }

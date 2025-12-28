@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { OrderService } from '../../app/services/order.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -10,7 +10,7 @@ import {
   MatCardActions,
 } from '@angular/material/card';
 import { Product } from '../../app/models/product';
-import { debounceTime, Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Order } from '../../app/models/order';
 import { MatIcon } from '@angular/material/icon';
 import { Dictionary } from '../../ts-utilis/dictionary.type';
@@ -27,16 +27,14 @@ import { Router } from '@angular/router';
     MatCardContent,
     MatCardFooter,
     MatCardSubtitle,
-
     CommonModule,
     MatIcon,
   ],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   private orderService = inject(OrderService);
   private router = inject(Router);
   orders = this.orderService.orders;
-
   orderItems = computed(() => {
     const ordersDict = this.orders();
     return Object.values(ordersDict);
@@ -54,8 +52,15 @@ export class CartComponent implements OnInit {
     this.subscribeOnInputChange();
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribeSubject$.next();
+    this.unsubscribeSubject$.complete();
+  }
+
   private subscribeOnInputChange(): void {
-    this.quantityChange$.pipe().subscribe((order) => this.updateTotalPrice(order));
+    this.quantityChange$
+      .pipe(takeUntil(this.unsubscribeSubject$))
+      .subscribe((order) => this.updateTotalPrice(order));
   }
 
   updateTotalPrice(order: Order): void {
@@ -66,14 +71,14 @@ export class CartComponent implements OnInit {
     this.quantityChange$.next({ product, quantity: Number(quantity) });
   }
 
-  removeItem(order: Order): void {
-    const newOrders: Dictionary<Order> = this.orderItems()
+  applyOrderItemUpdate(order: Order): void {
+    const updatedOrers: Dictionary<Order> = this.orderItems()
       .filter((orderItem) => orderItem.product.id !== order.product.id)
       .reduce((acc: Dictionary<Order>, order: Order) => {
         acc[order.product.id] = { product: order.product, quantity: order.quantity };
         return acc;
       }, {});
-    this.orderService.orders.set(newOrders);
+    this.orderService.orders.set(updatedOrers);
   }
 
   continueShopping(): void {

@@ -1,10 +1,8 @@
-import { Component, signal } from '@angular/core';
-import { provideRouter, RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { routes } from './app.routes';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +11,6 @@ import { routes } from './app.routes';
   imports: [RouterModule, MatTabsModule, CommonModule, MatIcon],
 })
 export class AppComponent {
-
   navLinks = [
     { label: 'Welcome', path: '', icon: 'home' },
     { label: 'Product List', path: '/products', icon: 'list' },
@@ -25,4 +22,3 @@ export class AppComponent {
   ];
   activeLink = this.navLinks[0].path;
 }
-
