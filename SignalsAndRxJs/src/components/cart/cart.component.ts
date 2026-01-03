@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { OrderService } from '../../app/services/order.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -7,14 +7,13 @@ import {
   MatCardTitle,
   MatCardFooter,
   MatCardSubtitle,
-  MatCardActions,
 } from '@angular/material/card';
-import { Product } from '../../app/models/product';
 import { Subject, takeUntil } from 'rxjs';
 import { Order } from '../../app/models/order';
 import { MatIcon } from '@angular/material/icon';
 import { Dictionary } from '../../ts-utilis/dictionary.type';
 import { Router } from '@angular/router';
+import { Product } from '../../app/models/product';
 
 @Component({
   selector: 'cart-component',
@@ -48,6 +47,12 @@ export class CartComponent implements OnInit, OnDestroy {
   quantityChange$: Subject<Order> = new Subject<Order>();
   unsubscribeSubject$: Subject<void> = new Subject<void>();
 
+  logEffect = effect(() => {
+    if (this.total() > 1000) {
+      console.log('Free delivery');
+    }
+  });
+
   ngOnInit(): void {
     this.subscribeOnInputChange();
   }
@@ -65,6 +70,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   updateTotalPrice(order: Order): void {
     this.orderService.addToCart(order.product, order.quantity);
+    this.logEffect;
   }
 
   onQuantityChange(product: Product, quantity: string): void {

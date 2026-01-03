@@ -9,7 +9,6 @@ import { Order } from '../models/order';
 })
 export class OrderService {
   orders = signal<Dictionary<Order>>({});
-  total = signal<number>(0);
 
   addToCart(product: Product, quantity: Maybe<number> = null): void {
     const existingOrder: Maybe<Order> = this.orders()[product.id];
