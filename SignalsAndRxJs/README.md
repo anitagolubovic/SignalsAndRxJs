@@ -4,7 +4,7 @@ Sadržaj:
 - [Uvod](#uvod)
 - [Reaktivno programiranje](#reaktivno-programiranje)
 - [RxJS u Angularu](#rxjs-u-angularu)
-- [Angular Signals](#:new:angular-signals)
+- [Angular Signals](#angular-signals)
 - [Poređenje signala i RxJS biblioteke](#poredjenje-signala-i-rxjs-biblioteke)
 - [Arhitektura aplikacije](#arhitektura-aplikacije)
 - [Implemenentirane funkcionalnosti](#implemenentirane-funkcionalnosti)
@@ -162,24 +162,26 @@ Klikom na _Continue Shopping_ korisnik opet može videti dostupnu listu proizvod
 
 
 ## Pokretanje aplikacije
+
 Da bi se aplikacija pokrenula lokalno, potrebno je imati instalirane sledeće alate:
 
-Node.js (preporučena LTS verzija)
-Angular CLI (verzija >=16)
+- Node.js (preporučena LTS verzija)
+- Angular CLI (verzija >=16)
 
 _Videti kompatibilne pakete za Angular verziju 21 (korišćena u projektu): (https://angular.dev/reference/versions)_
 
 1. Kloniranje repozitorijuma
-git clone [<URL_repozitorijuma>](https://github.com/anitagolubovic/SignalsAndRxJs.git)
-cd SignalsAndRxJs
 
+- git clone [<URL_repozitorijuma>](https://github.com/anitagolubovic/SignalsAndRxJs.git)
+- cd SignalsAndRxJs
 
 2. Instalacija zavisnosti
-yarn install
+
+- yarn install
 
 3. Pokretanje JSON Server-a
 
-**yarn fake-api**
+- yarn fake-api
 
 Ova komanda pokreće lokalni server koji služi podatke definisane u db.json fajlu.
 
@@ -187,11 +189,11 @@ Ova komanda pokreće lokalni server koji služi podatke definisane u db.json faj
 
 U drugom terminalu pokrenuti Angular aplikaciju:
 
-**ng serve**
+- ng serve
 
 Nakon uspešnog pokretanja, aplikacija je dostupna na adresi:
 
-http://localhost:4200
+_http://localhost:4200_
 
 ![Pokretanje](./public/assets/img/pokretanje-app.png)
 
