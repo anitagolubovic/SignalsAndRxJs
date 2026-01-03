@@ -13,10 +13,11 @@ Sadržaj:
 - [Mogućnosti daljeg razvoja](#mogućnosti-daljeg-razvoja)
 
 ## Uvod
-U okviru projekta **Shopping Cart** prikazana je primena reaktivnog programiranja u Angularu korišćenjem **RxJS** biblioteke i **Angular Signals**. <br>Cilj projekta je upoznavanje sa osnovnim principima reaktivnog pristupa, kao i razumevanje razlika i uloga koje RxJS i signali imaju u modernim Angular aplikacijama.
+
+U okviru projekta _Shopping Cart_ prikazana je primena reaktivnog programiranja u Angularu korišćenjem **RxJS** biblioteke i **Angular Signals**. <br>Cilj projekta je upoznavanje sa osnovnim principima reaktivnog pristupa, kao i razumevanje razlika i uloga koje RxJS i signali imaju u modernim Angular aplikacijama.
 Sa pojavom novijih verzija Angulara uveden je koncept **Angular Signals**, koji predstavlja novi način upravljanja stanjem i reakcijama na promene podataka. Kroz ovaj projekat analizirano je u koje svrhe se signali koriste, da li i u kojoj meri mogu zameniti RxJS, kao i na koji način njihova kombinovana upotreba daje najbolje rezultate.
 
-Na primeru **Shopping Cart** aplikacije prikazana je praktična primena oba pristupa, uz poseban fokus na jednostavnost, čitljivost i smanjenje kompleksnosti koda prilikom korišćenja signala. U nastavku dokumentacije biće reči o reaktivnom programiranju u Angularu, osnovama RxJS-a i Angular Signals, kao i o njihovim prednostima, nedostacima i realnim scenarijima primene.
+Na primeru _Shopping Cart_ aplikacije prikazana je praktična primena oba pristupa, uz poseban fokus na jednostavnost, čitljivost i smanjenje kompleksnosti koda prilikom korišćenja signala. U nastavku dokumentacije biće reči o reaktivnom programiranju u Angularu, osnovama RxJS-a i Angular Signals, kao i o njihovim prednostima, nedostacima i realnim scenarijima primene.
 
 ## Reaktivno programiranje
 
@@ -52,7 +53,7 @@ Signals API je mali i jednostavan za korišćenje i zasniva se na tri osnovne re
 
 - Writable signals: osnovni signali čija vrednost može da se menja i koji obaveštavaju Angular kada dođe do promena;
 - Computed signals: signali čija vrednost zavisi od drugih signala. Kada se signal od kojeg zavise promeni, automatski se menja i njihova vrednost;
-- Effects: specijalne funkcije koje reaguju kada se vrednost signala promeni i može da pokrene sporedne efekte kao što su logovanje, rad sa DOM-om, itd. Važno je napomenuti da **effects** ne vraćaju nove vrednosti. 
+- Effects: specijalne funkcije koje reaguju kada se vrednost signala promeni i može da pokrene sporedne efekte kao što su logovanje, rad sa DOM-om, itd. Važno je napomenuti da efekti ne vraćaju nove vrednosti. 
 
 Zahvaljujući ovim konceptima, Angular može da zna tačno gde i kada je potrebno izvršiti promene u interfejsu, bez potrebe za ručnim upravljanjem pretplatama (subscribe) ili oslobađanjem resursa (unsubscribe). Angular automatski prati zavisnosti između signala i ažurira samo one delove aplikacije koji su direktno pogođeni promenom, što rezultuje boljim performansama, jednostavnijim kodom i jasnijom strukturom u poređenju sa tradicionalnim obrascima reaktivnosti.
 
@@ -128,9 +129,11 @@ Aplikacija omogućava prikaz liste dostupnih proizvoda, koji se učitavaju sa si
 
 _Pretraživanje proizvoda_
 
-Implementirana je funkcionalnost pretraživanja proizvoda, gde se korisnički unos prati kao tok događaja, dok se rezultat filtriranja koristi za ažuriranje prikaza. Ova funkcionalnost je iskorišćena kao praktičan primer kombinovane upotrebe RxJS observables i Angular Signals, čime se demonstrira kako se asinhroni tokovi i lokalno stanje mogu povezati u jedno rešenje koje ostaje čitljivo i održivo.
+U ovom primeru prikazana je kombinovana upotreba RxJS observables i Angular Signals u okviru funkcionalnosti pretraživanja proizvoda. Korisnički unos se prvo obrađuje kao RxJS tok podataka, nakon čega se njegova vrednost pretvara u signal radi jednostavnijeg upravljanja stanjem. U nastavku, signal se po potrebi ponovo konvertuje u Observable kako bi se mogao kombinovati sa drugim asinhronim tokovima, dok se krajnji rezultat vraća u obliku signala za reaktivno ažuriranje korisničkog interfejsa.
 
 ![Pretraga-proizvoda](./public/assets/img/product-search.png)
+
+![Primer-koriscenja](./public/assets/img/combine-rxjs-signals.png)
 
 _Selekcija proizvoda i dodavanje u korpu_
 
