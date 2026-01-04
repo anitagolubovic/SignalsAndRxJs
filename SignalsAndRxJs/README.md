@@ -16,7 +16,7 @@
 <h2 id="uvod">📖 Uvod</h2>
 
 U okviru projekta _Shopping Cart_ prikazana je primena reaktivnog programiranja u Angularu korišćenjem **RxJS** biblioteke i **Angular Signals**.
-<br>Cilj projekta je upoznavanje sa osnovnim principima reaktivnog pristupa, kao i razumevanje razlika i uloga koje RxJS i signali imaju u modernim Angular aplikacijama.
+<br>Cilj projekta je upoznavanje sa osnovnim principima reaktivnog pristupa, kao i razumevanje razlika i uloga koje RxJS i Angular Signals imaju u modernim Angular aplikacijama.
 
 Sa pojavom novijih verzija Angulara uveden je koncept **Angular Signals**, koji predstavlja novi način upravljanja stanjem i reakcijama na promene podataka. Kroz ovaj projekat analizirano je u koje svrhe se signali koriste, da li i u kojoj meri mogu zameniti RxJS, kao i na koji način njihova kombinovana upotreba daje najbolje rezultate.
 
@@ -63,7 +63,7 @@ Nepravilno rukovanje pretplatama predstavlja jednu od glavnih mana RxJS bibliote
 
 ![RxJS](./public/assets/img/rxjs.png)
 
-> U ovom primeru RxJS se koristi za reaktivnu obradu korisničkog unosa u _Search products_ polju. Svaka promena vrednosti u inputu emituje se kroz pattern$ Subject, umesto da se direktno reaguje na svaki input događaj.
+> U ovom primeru RxJS se koristi za reaktivnu obradu korisničkog unosa u [_Search products_ polju](#pretrazivanje-proizvoda) Svaka promena vrednosti u inputu emituje se kroz pattern$ Subject, umesto da se direktno reaguje na svaki input događaj.
 > <br>Pretplata na pattern$ se uspostavlja u ngOnInit, gde se vrednosti dodatno obrađuju RxJS operatorima:
 >
 > - debounceTime(500) sprečava reagovanje na svako kucanje i čeka da korisnik napravi pauzu
@@ -172,11 +172,11 @@ Aplikacija omogućava prikaz liste dostupnih proizvoda, koji se učitavaju sa si
 
 ![Lista-proizvoda](./public/assets/img/product-list.png)
 
-- <h4>Pretraživanje proizvoda</h4>
-
-U ovom primeru prikazana je kombinovana upotreba RxJS observables i Angular Signals u okviru funkcionalnosti pretraživanja proizvoda. Korisnički unos se prvo obrađuje kao RxJS tok podataka, nakon čega se njegova vrednost pretvara u signal radi jednostavnijeg upravljanja stanjem. U nastavku, signal se po potrebi ponovo konvertuje u Observable kako bi se mogao kombinovati sa drugim asinhronim tokovima, dok se krajnji rezultat vraća u obliku signala za reaktivno ažuriranje korisničkog interfejsa.
+- <h4 id="pretrazivanje-proizvoda">Pretraživanje proizvoda</h4>
 
 ![Pretraga-proizvoda](./public/assets/img/product-search.png)
+
+U ovom primeru prikazana je kombinovana upotreba RxJS Observables i Angular Signals u okviru funkcionalnosti pretraživanja proizvoda. Korisnički unos se prvo obrađuje kao RxJS tok podataka, nakon čega se njegova vrednost pretvara u signal radi jednostavnijeg upravljanja stanjem. U nastavku, signal se po potrebi ponovo konvertuje u Observable kako bi se mogao kombinovati sa drugim asinhronim tokovima, dok se krajnji rezultat vraća u obliku signala za reaktivno ažuriranje korisničkog interfejsa.
 
 ![Primer-koriscenja](./public/assets/img/combine-rxjs-signals.png)
 
@@ -258,4 +258,3 @@ Uporedna primena RxJS-a i Angular Signals omogućila je sagledavanje njihovih ra
 
 Iako aplikacija u trenutnom obliku pokriva osnovne funkcionalnosti _Shopping Cart_ sistema, postoji više pravaca u kojima bi projekat mogao dodatno da se razvija i unapredi.
 <br>Jedna od mogućnosti je uvođenje pravog backend servisa, čime bi se omogućila autentikacija korisnika, upravljanje porudžbinama i trajno čuvanje podataka. Time bi se dodatno demonstrirala primena reaktivnih tokova u komunikaciji sa realnim API-jem.
-<br>Dalji razvoj mogao bi uključiti naprednije upravljanje stanjem aplikacije, kao što su podela globalnog i lokalnog stanja, kao i jasnije definisani obrasci za kombinovanje RxJS-a i Angular Signals u većim aplikacijama.
