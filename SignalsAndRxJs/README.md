@@ -29,19 +29,33 @@ U kontekstu Angular aplikacija, reaktivno programiranje omogućava da korisničk
 <br>Osnovna ideja reaktivnog programiranja je da se aplikacija posmatra kao skup zavisnosti između podataka, gde promena jedne vrednosti može izazvati lančanu reakciju i ažuriranje svih delova sistema koji od nje zavise. Ovakav pristup dovodi do predvidljivijeg ponašanja aplikacije, lakšeg upravljanja stanjem i jasnije separacije logike i prikaza.
 <br>Angular je posebno pogodan za reaktivni način rada jer je dizajniran kao framework koji reaguje na promene i automatski ažurira korisnički interfejs. Reaktivno programiranje pomaže u razvoju skalabilnih aplikacija, smanjuje količinu ponavljajućeg koda i olakšava rad sa asinhronim procesima, koji su česti u modernim web aplikacijama.
 
-## RxJS u Angularu
+<h2 id="rxjs-u-angularu">RxJS u Angularu</h2>
 
-RxJS (Reactive Extensions for JavaScript) je biblioteka koja omogućava implementaciju reaktivnog programiranja kroz rad sa tokovima podataka (streams) i asinhronim događajima. U Angular aplikacijama, RxJS se koristi kao osnovni mehanizam za upravljanje asinhronim operacijama i reagovanje na promene tokom vremena.
-<br>Osnovni koncept RxJS-a je **Observable**, koji predstavlja izvor podataka koji može emitovati jednu ili više vrednosti tokom svog životnog ciklusa. Observable može predstavljati različite vrste događaja, kao što su HTTP zahtevi, korisničke interakcije, vremenski intervali ili promene u stanju aplikacije. Komponente ili servisi mogu se pretplatiti (subscribe-ovati) na Observable i reagovati svaki put kada se emitovana vrednost promeni.
-<br>RxJS omogućava obradu i transformaciju tokova podataka pomoću velikog broja operatora, kao što su filtriranje, mapiranje, kombinovanje i rukovanje greškama. Na ovaj način se složena asinhrona logika može izraziti deklarativno, kroz jasno definisan tok podataka, umesto imperativnog upravljanja stanjima i callback funkcijama.
+![RxJS](https://img.shields.io/badge/RxJS-Reactive-purple)
 
-U Angularu, RxJS ima ključnu ulogu u komunikaciji sa backend servisima, upravljanju događajima i sinhronizaciji podataka između različitih delova aplikacije. Iako pruža izuzetnu fleksibilnost i moć, RxJS može povećati kompleksnost koda ukoliko se koristi za jednostavne scenarije, naročito kada postoji veliki broj pretplata (subscriptions) koje je potrebno pravilno održavati i otkazivati.
+RxJS (Reactive Extensions for JavaScript) je biblioteka koja omogućava reaktivno programiranje zasnovano na tokovima podataka i asinhronim događajima. U Angular aplikacijama, RxJS predstavlja osnovni mehanizam za obradu podataka koji se menjaju tokom vremena, kao što su HTTP zahtevi, korisničke interakcije, vremenski intervali i komunikacija sa eksternim servisima.
 
-Uprkos tome, RxJS ostaje neizostavan deo Angular ekosistema i predstavlja snažan alat za rešavanje kompleksnih asinhronih problema i upravljanje tokovima podataka u modernim web aplikacijama.
+Centralni koncept RxJS-a je **Observable**, koji predstavlja tok vrednosti koje se emituju tokom vremena. Observable može emitovati više vrednosti, signalizirati grešku ili označiti završetak toka. Komponente i servisi mogu da se pretplate na Observable i reaguju na svaku promenu podataka.
 
-Tradicionalno, reaktivnost u Angularu se ostvarivala korišćenjem RxJS-a i observables-a. Iako je RxJS izuzetno moćan alat za rad sa asinhronim tokovima podataka, njegova bogata API površina, sa velikim brojem operatora i pretplata, može predstavljati izazov u jednostavnijim scenarijima.
+Jedna od glavnih prednosti RxJS biblioteke je mogućnost **deklarativne obrade tokova podataka** pomoću bogatog skupa operatora. Korišćenjem operatora kao što su `map`, `filter`, `debounceTime`, `switchMap`, `combineLatest` i `catchError`, moguće je jasno definisati način transformacije podataka, redosled izvršavanja i ponašanje aplikacije u slučaju grešaka.
 
-Kao odgovor na ovu potrebu, Angular uvodi **Angular Signals**, koji pružaju jednostavniji i direktniji način implementacije reaktivnog koda, naročito za upravljanje lokalnim stanjem unutar komponenti.
+RxJS posebno dolazi do izražaja u scenarijima koji uključuju kompleksnu asinhronu logiku, kao što su otkazivanje prethodnih zahteva, kombinovanje više izvora podataka i kontrola toka događaja. Na ovaj način, složeni asinhroni procesi se mogu modelovati kroz jasan i čitljiv tok podataka.
+
+### Upravljanje pretplatama i memorijom
+
+Važan aspekt korišćenja RxJS-a u Angular aplikacijama jeste pravilno upravljanje **pretplatama (subscriptions)**. Svaka aktivna pretplata zauzima resurse, a ukoliko se ne otkaže na odgovarajući način, može doći do **curenja memorije (memory leaks)** i degradacije performansi aplikacije.
+
+Zbog toga je neophodno voditi računa o životnom ciklusu Observable tokova. U praksi, to podrazumeva:
+
+- eksplicitno otkazivanje pretplata prilikom uništavanja komponente;
+- upotrebu operatora kao što su `take`, `takeUntil` i `first`;
+- korišćenje Angular `async` pipe-a, koji automatski upravlja pretplatama.
+
+Nepravilno rukovanje pretplatama predstavlja jednu od glavnih mana RxJS biblioteke u jednostavnijim scenarijima i zahteva dodatnu pažnju prilikom razvoja aplikacije.
+
+Iako RxJS pruža snažan i fleksibilan mehanizam za rad sa asinhronim tokovima podataka, njegova primena u jednostavnim scenarijima upravljanja lokalnim stanjem često dovodi do povećane složenosti koda i potrebe za pažljivim upravljanjem pretplatama. Ovakvi slučajevi ukazali su na potrebu za jednostavnijim reaktivnim modelom, koji bi bio direktnije povezan sa stanjem i prikazom aplikacije.
+
+Iz tog razloga, u novijim verzijama Angulara uveden je koncept Angular Signals, koji omogućava reaktivno upravljanje stanjem bez eksplicitnog rada sa tokovima i pretplatama, čime se pojednostavljuje razvoj UI logike u komponentama.
 
 ### Primer upotrebe RxJS u aplikaciji
 
@@ -50,6 +64,8 @@ Kao odgovor na ovu potrebu, Angular uvodi **Angular Signals**, koji pružaju jed
 Ovaj primer pokazuje kako se RxJS koristi za obradu korisničkog unosa kroz tok podataka i primenu operatora za optimizaciju pretrage.
 
 <h2 id="angular-signals">🆕 Angular Signals</h2>
+
+![Signals](https://img.shields.io/badge/Angular-Signals-brightgreen)
 
 Angular Signals su nov reaktivni model koji je zvanično uveden u verziji 16, u maju 2023. godine, sa ciljem da omogući jednostavnije i preciznije upravljanje stanjem aplikacije. Signal se može posmatrati kao kontejner koji sadrži određenu vrednost (na primer broj ili tekst) i obaveštava ostale delove aplikacije kada se ta vrednost promeni. Kada se signal koristi, Angular automatski prati njegovu upotrebu, čime precizno zna gde i na koji način ta vrednost utiče na aplikaciju.
 
@@ -94,12 +110,14 @@ Primer prikazuje kako se trenutna vrednost signala dobija pozivom signala, **ord
 Poslednji primer prikazuje korišćenje **effect** koncepta.
 
 <h2 id="poredjenje-signala-i-rxjs-biblioteke">
-  ⚖️ Poređenje signala i RxJS biblioteke
+  🆚 Poređenje signala i RxJS biblioteke
 </h2>
 
-RxJS i Angular Signals predstavljaju dva različita pristupa reaktivnosti u Angular aplikacijama, svaki sa svojim prednostima i namenom. Iako oba služe za reagovanje na promene podataka, njihov način rada i oblasti primene se značajno razlikuju.
-RxJS je zasnovan na konceptu tokova podataka kroz vreme, gde se vrednosti emituju asinhrono i obrađuju pomoću observables i operatora. Ovaj pristup je izuzetno moćan za rad sa kompleksnim asinhronim scenarijima, ali može povećati složenost koda, naročito u većim aplikacijama.
-Angular Signals, sa druge strane, uvode jednostavniji i sinhroni model reaktivnosti, fokusiran na trenutno stanje aplikacije i njegove zavisnosti. Signali omogućavaju automatsko praćenje promena bez ručnog upravljanja pretplatama, što rezultuje čitljivijim i kraćim kodom u jednostavnijim slučajevima.
+RxJS i Angular Signals predstavljaju dva različita pristupa reaktivnosti u Angular aplikacijama, svaki sa jasno definisanom ulogom i oblastima primene. Iako oba mehanizma omogućavaju reagovanje na promene podataka, oni rešavaju različite probleme i zasnivaju se na drugačijem modelu razmišljanja.
+
+RxJS je zasnovan na konceptu tokova podataka kroz vreme, gde se vrednosti emituju asinhrono i obrađuju pomoću observables i bogatog skupa operatora. Ovakav pristup omogućava preciznu kontrolu nad redosledom izvršavanja, rukovanjem greškama, otkazivanjem i kombinovanjem više asinhronih izvora podataka. Međutim, ova fleksibilnost dolazi uz veću složenost koda, kao i potrebu za eksplicitnim upravljanjem pretplatama, kako bi se izbeglo curenje memorije i neželjeno ponašanje aplikacije.
+
+Angular Signals, sa druge strane, uvode jednostavniji i sinhroni model reaktivnosti, fokusiran na trenutno stanje aplikacije i njegove zavisnosti. Promene se automatski prate bez potrebe za ručnim upravljanjem pretplatama, čime se smanjuje rizik od grešaka vezanih za životni ciklus i memoriju. Zbog toga su signali posebno pogodni za upravljanje lokalnim stanjem i UI logikom, gde nije potrebna kompleksna obrada asinhronih tokova.
 
 | Aspekt                           | Angular Signals                         | Observables (RxJS)                                                                                                                                                                                                                                                                      |
 | -------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
