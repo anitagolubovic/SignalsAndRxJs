@@ -8,7 +8,7 @@
 - [Angular Signals](#angular-signals)
 - [Poređenje signala i RxJS biblioteke](#poredjenje-signala-i-rxjs-biblioteke)
 - [Arhitektura aplikacije](#arhitektura-aplikacije)
-- [Implemenentirane funkcionalnosti](#implemenentirane-funkcionalnosti)
+- [Implementirane funkcionalnosti](#implementirane-funkcionalnosti)
 - [Pokretanje aplikacije](#pokretanje-aplikacije)
 - [Zaključak](#zakljucak)
 - [Mogućnosti daljeg razvoja](#mogućnosti-daljeg-razvoja)
@@ -130,7 +130,7 @@ U cilju pojednostavljenja arhitekture i fokusa na klijentsku logiku i reaktivne 
 
 Arhitektura aplikacije je podeljena na jasne celine kroz komponente (_app_, _welcome_, _product-list_, _product_, _cart_) i servise (_order.service.ts_, _product.service.ts_), gde se reaktivni obrasci koriste za upravljanje podacima, dok se poslovna logika i stanje aplikacije razdvajaju od prikaza. Poseban akcenat stavljen je na demonstraciju kako se moderni Angular mehanizmi mogu koristiti za postizanje čitljivog, održivog i skalabilnog koda u realnom primeru, poput _Shopping Cart_ aplikacije.
 
-<h2 id="implemenentirane-funkcionalnosti">✨ Implemenentirane funkcionalnosti</h2>
+<h2 id="implementirane-funkcionalnosti">✨ Implementirane funkcionalnosti</h2>
 
 U okviru _Shopping Cart_ aplikacije implementirane su osnovne funkcionalnosti tipične za e-commerce sistem, sa posebnim fokusom na demonstraciju reaktivnog upravljanja podacima i stanjem aplikacije.
 
@@ -192,21 +192,25 @@ _Videti kompatibilne pakete za Angular verziju 21 (korišćena u projektu): (htt
 
 2. Instalacija zavisnosti
 
-- yarn install
+- Preporučeno (projekt koristi Yarn): `yarn install`
+- Alternativno (ako koristite npm): `npm install`
 
-3. Pokretanje JSON Server-a
+3. Pokretanje JSON Server-a (mock API)
 
-- yarn fake-api
+- Pokrenite: `yarn fake-api` ili `npm run fake-api`
+- Podrazumevani port JSON Server-a je **3000**. Za eksplicitno pokretanje na portu 3000 koristite:
+  - `npx json-server --watch db.json --port 3000`
+  - ili `npm run fake-api -- --port 3000` (ako koristite npm)
 
-Ova komanda pokreće lokalni server koji služi podatke definisane u db.json fajlu.
+Ova komanda pokreće lokalni server koji služi podatke definisane u `db.json` fajlu.
 
 4. Pokretanje Angular aplikacije
 
 U drugom terminalu pokrenuti Angular aplikaciju:
 
-- ng serve
+- `ng serve` (ili `yarn start` / `npm start`)
 
-Nakon uspešnog pokretanja, aplikacija je dostupna na adresi:
+Nakon uspešnog pokretanja, aplikacija je dostupna na adresi: `http://localhost:4200`
 
 _http://localhost:4200_
 
