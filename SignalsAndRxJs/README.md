@@ -60,7 +60,21 @@ Zbog toga je neophodno voditi računa o životnom ciklusu Observable tokova. U p
 - upotrebu operatora kao što su `take`, `takeUntil` i `first`;
 - korišćenje Angular `async` pipe-a, koji automatski upravlja pretplatama.
 
-![unsubscribe](./public/assets/img/unsubcribe.png)
+```typescript
+ ngOnDestroy(): void {
+    this.unsubscribeSubject$.next();
+    this.unsubscribeSubject$.complete();
+  }
+
+  private subscribeToSearchPattern(): void {
+    this.pattern$
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.unsubscribeSubject$))
+      .subscribe((pattern) => {
+        this.searchPattern.set(pattern);
+        this.productService.searchPattern.set(pattern);
+      });
+  }
+```
 
 > U ovom primeru se koristi čest RxJS obrazac za upravljanje pretplatama u Angular komponenti. Sve pretplate koriste takeUntil(this.unsubscribeSubject$), gde unsubscribeSubject$ predstavlja Observable za uništavanje komponente.
 > <br>Kada se komponenta uništi (ngOnDestroy), emituje se vrednost kroz unsubscribeSubject$, čime se automatski prekidaju sve aktivne pretplate, bez potrebe za ručnim unsubscribe() pozivima. Na ovaj način se sprečava curenje memorije i kod ostaje jednostavan i pregledan.
@@ -69,7 +83,47 @@ Nepravilno rukovanje pretplatama predstavlja jednu od glavnih mana RxJS bibliote
 
 ### Primer upotrebe RxJS u aplikaciji
 
-![RxJS](./public/assets/img/rxjs.png)
+```typescript
+  private productService = inject(ProductService);
+  selectedProduct: Signal<Maybe<Product>> = this.productService.selectedProduct;
+  searchPattern = signal<string>('');
+  pattern$: Subject<string> = new Subject<string>();
+  unsubscribeSubject$: Subject<void> = new Subject<void>();
+
+  ngOnInit(): void {
+    this.subscribeToSearchPattern();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeSubject$.next();
+    this.unsubscribeSubject$.complete();
+  }
+
+
+  private subscribeToSearchPattern(): void {
+    this.pattern$
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.unsubscribeSubject$))
+      .subscribe((pattern) => {
+        this.searchPattern.set(pattern);
+        this.productService.searchPattern.set(pattern);
+      });
+  }
+
+  //html
+
+   <div class="product-list__search">
+    <mat-form-field class="product-list__search-input">
+      <mat-label>Search products</mat-label>
+      <input
+        matInput
+        type="text"
+        [value]="searchPattern()"
+        (input)="pattern$.next($event.target.value)"
+      />
+    </mat-form-field>
+  </div>
+
+```
 
 > U ovom primeru RxJS se koristi za reaktivnu obradu korisničkog unosa u [_Search products_ polju](#pretrazivanje-proizvoda) Svaka promena vrednosti u inputu emituje se kroz pattern$ Subject, umesto da se direktno reaguje na svaki input događaj.
 > <br>Pretplata na pattern$ se uspostavlja u ngOnInit, gde se vrednosti dodatno obrađuju RxJS operatorima:
@@ -113,19 +167,62 @@ Ovim pristupom je demonstrirano kako se Angular Signals mogu koristiti za pojedn
 
 #### Primeri korišćenja Angular Signals
 
-![Orders](./public/assets/img/orders.png)
+```typescript
+export class OrderService {
+  orders = signal<Dictionary<Order>>({});
+
+  addToCart(product: Product, quantity: Maybe<number> = null): void {
+    const existingOrder: Maybe<Order> = this.orders()[product.id];
+    const resolvedQuantity = quantity ?? (existingOrder?.quantity ?? 0) + 1;
+
+    this.orders.update((prev) => ({
+      ...prev,
+      [product.id]: {
+        product,
+        quantity: resolvedQuantity,
+      },
+    }));
+  }
+}
+```
 
 > U ovom primeru koristi se _writable signal orders_ za čuvanje stanja porudžbina. Promena vrednosti signala vrši se pomoću metode **update**, čime se stanje ažurira nepromenljivo, a Angular automatski detektuje promene i ažurira korisnički interfejs.
 
-![Computed](./public/assets/img/computed.png)
+```typescript
+ private orderService = inject(OrderService);
+  orders = this.orderService.orders;
+  orderItems = computed(() => {
+    const ordersDict = this.orders();
+    return Object.values(ordersDict);
+  });
+  total = computed(() => {
+    return this.orderItems().reduce((acc: number, order: Order) => {
+      acc += order.product.price * order.quantity;
+      return acc;
+    }, 0);
+  });
+```
 
 > U ovom primeru koriste se _computed signali_ za izvođenje novih vrednosti na osnovu postojećeg stanja. _orderItems_ predstavlja izvedenu vrednost dobijenu iz signala _orders_, dok je _total_ computed signal čija vrednost zavisi od liste porudžbina. Kada se promeni vrednost signala orders, oba computed signala se automatski ponovo izračunavaju.
 
-![Signals-in-html](./public/assets/img/signals-html.png)
+```typescript
+//html
+ @if(orderItems().length > 0) { @for(order of orderItems(); track order.product?.id)}
+
+ <mat-card-footer class="cart__total">
+  <strong>Total: {{ total() | currency }}</strong>
+ </mat-card-footer>
+```
 
 > Primer prikazuje kako se trenutna vrednost signala dobija pozivom signala, **orderItems()**, **total()**.
 
-![Effect](./public/assets/img/effect.png)
+```typescript
+logEffect = effect(() => {
+  if (this.total() > 1000) {
+    console.log('Free delivery');
+  }
+});
+```
 
 > Poslednji primer prikazuje korišćenje **effect** koncepta.
 
@@ -184,7 +281,44 @@ Aplikacija omogućava prikaz liste dostupnih proizvoda, koji se učitavaju sa si
 
 U ovom primeru prikazana je kombinovana upotreba RxJS Observables i Angular Signals u okviru funkcionalnosti pretraživanja proizvoda. Korisnički unos se prvo obrađuje kao RxJS tok podataka, nakon čega se njegova vrednost pretvara u signal radi jednostavnijeg upravljanja stanjem. U nastavku, signal se po potrebi ponovo konvertuje u Observable kako bi se mogao kombinovati sa drugim asinhronim tokovima, dok se krajnji rezultat vraća u obliku signala za reaktivno ažuriranje korisničkog interfejsa.
 
-![Primer-koriscenja](./public/assets/img/combine-rxjs-signals.png)
+```typescript
+//product-list.component.html
+ <div class="product-list__search">
+    <mat-form-field class="product-list__search-input">
+      <mat-label>Search products</mat-label>
+      <input
+        matInput
+        type="text"
+        [value]="searchPattern()"
+        (input)="pattern$.next($event.target.value)"
+      />
+    </mat-form-field>
+ </div>
+
+ //product-list.component.ts
+  private subscribeToSearchPattern(): void {
+    this.pattern$
+      .pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.unsubscribeSubject$))
+      .subscribe((pattern) => {
+        this.searchPattern.set(pattern);
+        this.productService.searchPattern.set(pattern);
+    });
+  }
+
+  //product.service.ts
+  getProducts(): Signal<Product[]> {
+    const products$ = this.http.get<Product[]>(this.apiUrl);
+    const filteredProducts$ = combineLatest([products$, toObservable(this.searchPattern)]).pipe(
+      map(([products, query]) => {
+        this.allProducts.set(products);
+        return products.filter((product) =>
+          product.name.toLowerCase().includes(query.toLowerCase())
+        );
+      })
+    );
+    return toSignal(filteredProducts$, { initialValue: [] });
+  }
+```
 
 - <h4>Selekcija proizvoda i dodavanje u korpu</h4>
 
