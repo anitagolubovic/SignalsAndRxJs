@@ -36,8 +36,4 @@ export class ProductService {
   selectProduct(product: Maybe<Product>): void {
     this.selectedProduct.set(product);
   }
-
-  getProductById(id: number): Maybe<Product> {
-    return this.allProducts().find((product) => product.id === id);
-  }
 }

@@ -36,9 +36,17 @@ Reaktivno programiranje pomaže u razvoju skalabilnih aplikacija, smanjuje koli�
 
 ![RxJS](https://img.shields.io/badge/RxJS-Reactive-purple)
 
-RxJS (Reactive Extensions for JavaScript) je biblioteka za reaktivno programiranje koja omogućava rad sa asinhronim tokovima podataka u Angular aplikacijama. Osnovni koncept RxJS-a je **Observable**, koji predstavlja tok vrednosti koje se emituju tokom vremena i na koje se aplikacija može pretplatiti (subscribe) kako bi reagovala na promene podataka.
+RxJS (Reactive Extensions for JavaScript) je biblioteka za reaktivno programiranje koja omogućava rad sa asinhronim tokovima podataka u Angular aplikacijama. Osnovni koncept RxJS-a je **Observable**, koji predstavlja tok vrednosti koje se emituju tokom vremena, ali važno je naglasiti da se obrada tog toka ne pokreće automatski. Observable ne izvršava nikakvu logiku dok se na njega ne uspostavi pretplata (subscribe). Tek u trenutku pretplate započinje emitovanje vrednosti i obrada asinhronog procesa, što omogućava bolju kontrolu nad izvršavanjem i korišćenjem resursa.
 
-Observable tokovi se izvršavaju tek u trenutku kada postoji aktivna pretplata, što omogućava efikasno korišćenje resursa i kontrolu toka podataka. Korišćenjem bogatog skupa operatora, poput `map`, `filter`, `switchMap`, `debounceTime` i `combineLatest`, moguće je deklarativno definisati transformaciju podataka, upravljanje redosledom izvršavanja i reagovanje na korisničke događaje.
+Tok jednog Observable-a definiše se kroz tri tipa notifikacija:
+
+- next: emituje novu vrednost ka pretplatnicima;
+- error: signalizira grešku i prekida tok;
+- complete: označava da je tok završen i da više nema emitovanja.
+
+Pozivom error ili complete, Observable se završava i nakon toga više ne može emitovati nove vrednosti.
+
+Korišćenjem bogatog skupa operatora, poput `map`, `filter`, `switchMap`, `debounceTime` i `combineLatest`, moguće je deklarativno definisati transformaciju podataka, upravljanje redosledom izvršavanja i reagovanje na korisničke događaje.
 
 U Angular aplikacijama RxJS se najčešće koristi za obradu HTTP zahteva, korisničkih interakcija i drugih asinhronih procesa. Iako je izuzetno moćan alat za modelovanje složenih tokova podataka, njegova upotreba zahteva pažljivo upravljanje pretplatama, kako bi se izbegli problemi sa memorijom i održivošću aplikacije.
 
@@ -75,20 +83,18 @@ Nepravilno rukovanje pretplatama predstavlja jednu od glavnih mana RxJS bibliote
 
 <h2 id="angular-signals">🆕 Angular Signals</h2>
 
+Upravo potreba za ručnim upravljanjem pretplatama i kompleksnost asinhronih tokova dovela je do uvođenja Angular Signals.
+
 ![Signals](https://img.shields.io/badge/Angular-Signals-brightgreen)
 
 Angular Signals su nov reaktivni model koji je zvanično uveden u verziji 16, u maju 2023. godine, sa ciljem da omogući jednostavnije i preciznije upravljanje stanjem aplikacije. Signal se može posmatrati kao kontejner koji sadrži određenu vrednost (na primer broj ili tekst) i obaveštava ostale delove aplikacije kada se ta vrednost promeni. Kada se signal koristi, Angular automatski prati njegovu upotrebu, čime precizno zna gde i na koji način ta vrednost utiče na aplikaciju.
 
 Signals API je mali i jednostavan za korišćenje i zasniva se na tri osnovne reaktivne primitive koje Angularu omogućavaju da zna kada i gde dolazi do promene podataka, čime se postiže efikasnije i preciznije ažuriranje korisničkog interfejsa.
 
-Iako RxJS pruža snažan i fleksibilan mehanizam za rad sa asinhronim tokovima podataka, njegova primena u jednostavnim scenarijima upravljanja lokalnim stanjem često dovodi do povećane složenosti koda i potrebe za pažljivim upravljanjem pretplatama. Ovakvi slučajevi ukazali su na potrebu za jednostavnijim reaktivnim modelom, koji bi bio direktnije povezan sa stanjem i prikazom aplikacije.
-
-Iz tog razloga, u novijim verzijama Angulara uveden je koncept Angular Signals, koji omogućava reaktivno upravljanje stanjem bez eksplicitnog rada sa tokovima i pretplatama, čime se pojednostavljuje razvoj UI logike u komponentama.
-
 ### Osnovni koncepti Signals API-ja
 
 - Writable signals: osnovni signali čija vrednost može da se menja i koji obaveštavaju Angular kada dođe do promena;
-- Computed signals: signali čija vrednost zavisi od drugih signala. Kada se signal od kojeg zavise promeni, automatski se menja i njihova vrednost;
+- Computed signals: signali čija vrednost zavisi od drugih signala. Kada se signal od kojeg zavise promeni, automatski se menja i njihova vrednost. Ovi signali su read-only;
 - Effects: specijalne funkcije koje reaguju kada se vrednost signala promeni i može da pokrene sporedne efekte kao što su logovanje, rad sa DOM-om, itd. Važno je napomenuti da efekti ne vraćaju nove vrednosti.
 
 Zahvaljujući ovim konceptima, Angular može da zna tačno gde i kada je potrebno izvršiti promene u interfejsu, bez potrebe za ručnim upravljanjem pretplatama ili oslobađanjem resursa. Angular automatski prati zavisnosti između signala i ažurira samo one delove aplikacije koji su direktno pogođeni promenom, što rezultuje boljim performansama, jednostavnijim kodom i jasnijom strukturom u poređenju sa tradicionalnim obrascima reaktivnosti.
@@ -133,18 +139,18 @@ RxJS je zasnovan na konceptu tokova podataka kroz vreme, gde se vrednosti emituj
 
 Angular Signals, sa druge strane, uvode jednostavniji i sinhroni model reaktivnosti, fokusiran na trenutno stanje aplikacije i njegove zavisnosti. Promene se automatski prate bez potrebe za ručnim upravljanjem pretplatama, čime se smanjuje rizik od grešaka vezanih za životni ciklus i memoriju. Zbog toga su signali posebno pogodni za upravljanje lokalnim stanjem i UI logikom, gde nije potrebna kompleksna obrada asinhronih tokova.
 
-| Aspekt                           | Angular Signals                         | Observables (RxJS)                                                                                                                                                                                                                                                                      |
-| -------------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Osnovna namena                   | Upravljanje sinhronim, lokalnim stanjem | Upravljanje asinhronim tokovima podataka                                                                                                                                                                                                                                                |
-| Tip reaktivnosti                 | Pull-based (čita se trenutna vrednost)  | Push-based (vrednosti se emituju tokom vremena)                                                                                                                                                                                                                                         |
-| Vremenska dimenzija              | Fokus na trenutno stanje                | Fokus na tok vrednosti kroz vreme                                                                                                                                                                                                                                                       |
-| Pretplate                        | Nisu potrebne                           | Potrebne (`subscribe / unsubscribe`)                                                                                                                                                                                                                                                    |
-| Upravljanje memorijom            | Automatsko                              | Ručno upravljanje pretplatama (`unsubscribe`)                                                                                                                                                                                                                                           |
-| Kompleksnost                     | Jednostavniji model                     | Složeniji, ali veoma moćan                                                                                                                                                                                                                                                              |
-| Transformacije podataka          | Ograničene (computed vrednosti)         | Bogat skup operatora (`map`, `filter`, `switchMap`, itd.)                                                                                                                                                                                                                               |
-| Rukovanje asinhronim operacijama | Nije primarna namena                    | Primarna namena                                                                                                                                                                                                                                                                         |
-| Integracija sa UI                | Direktna i jednostavna                  | Posredna, kroz tokove                                                                                                                                                                                                                                                                   |
-| Tipični use-case                 | Lokalno stanje, UI logika               | HTTP zahtevi, korisnički događaji (input, scroll), WebSocket komunikacija, kombinovanje više izvora podataka (combineLatest, merge, switchMap...), kompleksne transformacije i rukovanje greškama kroz operatore, scenariji gde je bitan tok vrednosti tokom vremena (intervali, retry) |
+| Aspekt                           | Angular Signals                                             | Observables (RxJS)                                                                                                                                                                                                                                                                      |
+| -------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Osnovna namena                   | Upravljanje sinhronim, lokalnim stanjem                     | Upravljanje asinhronim tokovima podataka                                                                                                                                                                                                                                                |
+| Tip reaktivnosti                 | Pull-based (čita se trenutna vrednost kada je neko zatraži) | Push-based (vrednosti se emituju tokom vremena)                                                                                                                                                                                                                                         |
+| Vremenska dimenzija              | Fokus na trenutno stanje                                    | Fokus na tok vrednosti kroz vreme                                                                                                                                                                                                                                                       |
+| Pretplate                        | Nisu potrebne                                               | Potrebne (`subscribe / unsubscribe`)                                                                                                                                                                                                                                                    |
+| Upravljanje memorijom            | Automatsko                                                  | Ručno upravljanje pretplatama (`unsubscribe`)                                                                                                                                                                                                                                           |
+| Kompleksnost                     | Jednostavniji model                                         | Složeniji, ali veoma moćan                                                                                                                                                                                                                                                              |
+| Transformacije podataka          | Ograničene (computed vrednosti)                             | Bogat skup operatora (`map`, `filter`, `switchMap`, itd.)                                                                                                                                                                                                                               |
+| Rukovanje asinhronim operacijama | Nije primarna namena                                        | Primarna namena                                                                                                                                                                                                                                                                         |
+| Integracija sa UI                | Direktna i jednostavna                                      | Posredna, kroz tokove                                                                                                                                                                                                                                                                   |
+| Tipični use-case                 | Lokalno stanje, UI logika                                   | HTTP zahtevi, korisnički događaji (input, scroll), WebSocket komunikacija, kombinovanje više izvora podataka (combineLatest, merge, switchMap...), kompleksne transformacije i rukovanje greškama kroz operatore, scenariji gde je bitan tok vrednosti tokom vremena (intervali, retry) |
 
 _Tabela je zasnovana na članku: https://dev.to/raju_dandigam/angular-signals-vs-observables-a-deep-dive-into-modern-reactivity-l03_
 
