@@ -248,7 +248,7 @@ export class OrderService {
 ```typescript
 logEffect = effect(() => {
   if (this.total() > 1000) {
-    console.log('Free delivery');
+    console.log("Free delivery");
   }
 });
 ```
@@ -309,11 +309,11 @@ U okviru _Shopping Cart_ aplikacije implementirane su osnovne funkcionalnosti ti
 
 Aplikacija omogućava prikaz liste dostupnih proizvoda, koji se učitavaju sa simuliranog backend servisa korišćenjem JSON Server-a. Podaci o proizvodima se asinhrono preuzimaju i dostupni su komponentama aplikacije za dalju obradu i prikaz.
 
-![Lista-proizvoda](./public/assets/img/product-list.png)
+![Lista-proizvoda](SignalsAndRxJs/public/assets/img/product-list.png)
 
 - <h4 id="pretrazivanje-proizvoda">Pretraživanje proizvoda</h4>
 
-![Pretraga-proizvoda](./public/assets/img/product-search.png)
+![Pretraga-proizvoda](SignalsAndRxJs/public/assets/img/product-search.png)
 
 U ovom primeru prikazana je kombinovana upotreba RxJS Observables i Angular Signals u okviru funkcionalnosti pretraživanja proizvoda. Korisnički unos se prvo obrađuje kao RxJS tok podataka, nakon čega se njegova vrednost pretvara u signal radi jednostavnijeg upravljanja stanjem. U nastavku, signal se po potrebi ponovo konvertuje u Observable kako bi se mogao kombinovati sa drugim asinhronim tokovima, dok se krajnji rezultat vraća u obliku signala za reaktivno ažuriranje korisničkog interfejsa.
 
@@ -360,7 +360,7 @@ U ovom primeru prikazana je kombinovana upotreba RxJS Observables i Angular Sign
 
 Klikom na proizvod iz liste, prikazujuju se karakteristike proizvoda, poput naziva, opisa, slike i cene. Korisnik može dodati proizvod u korpu. Promene u sadržaju korpe automatski se reflektuju u korisničkom interfejsu, čime se demonstrira reaktivno upravljanje stanjem aplikacije bez potrebe za ručnim osvežavanjem prikaza.
 
-![Dodavanje-proizvoda](./public/assets/img/add-to-cart.png)
+![Dodavanje-proizvoda](SignalsAndRxJs/public/assets/img/add-to-cart.png)
 
 - <h4>Ažuriranje količine proizvoda i izračunavanje ukupne cene</h4>
 
@@ -368,13 +368,13 @@ Za svaki proizvod u korpi omogućena je izmena količine. Ukupna vrednost korpe 
 
 Ukupna cena korpe računa se dinamički na osnovu trenutnog sadržaja i količine proizvoda. Ova vrednost predstavlja deriviranu informaciju koja zavisi od više ulaznih podataka, što čini dobar primer primene reaktivnog pristupa.
 
-![Cart](./public/assets/img/cart.png)
+![Cart](SignalsAndRxJs/public/assets/img/cart.png)
 
 - <h4>Uklanjanje proizvoda</h4>
 
 Klikom na ikonu, proizvod se uklanja iz korpe i ažurira se stanje.
 
-![Uklanjanje-proizvoda](./public/assets/img/delete.png)
+![Uklanjanje-proizvoda](SignalsAndRxJs/public/assets/img/delete.png)
 
 - <h4>Sinhronizacija stanja i prikaza</h4>
 
@@ -421,9 +421,9 @@ U drugom terminalu pokrenuti Angular aplikaciju:
 
 Nakon uspešnog pokretanja, aplikacija je dostupna na adresi: http://localhost:4200
 
-![Pokretanje](./public/assets/img/pokretanje-app.png)
+![Pokretanje](SignalsAndRxJs/public/assets/img/pokretanje-app.png)
 
-![Uspesno-pokrenuta](./public/assets/img/localhost.png)
+![Uspesno-pokrenuta](SignalsAndRxJs/public/assets/img/localhost.png)
 
 <h2 id="zakljucak">Zaključak</h2>
 
