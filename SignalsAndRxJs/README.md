@@ -7,6 +7,7 @@
 - [RxJS u Angularu](#rxjs-u-angularu)
 - [Angular Signals](#angular-signals)
 - [Poređenje signala i RxJS biblioteke](#poredjenje-signala-i-rxjs-biblioteke)
+- [RxJS i signali zajedno](#rxjs-i-signali-zajedno)
 - [Arhitektura aplikacije](#arhitektura-aplikacije)
 - [Implementirane funkcionalnosti](#implementirane-funkcionalnosti)
 - [Pokretanje aplikacije](#pokretanje-aplikacije)
@@ -153,6 +154,34 @@ Signals API je mali i jednostavan za korišćenje i zasniva se na tri osnovne re
 
 Zahvaljujući ovim konceptima, Angular može da zna tačno gde i kada je potrebno izvršiti promene u interfejsu, bez potrebe za ručnim upravljanjem pretplatama ili oslobađanjem resursa. Angular automatski prati zavisnosti između signala i ažurira samo one delove aplikacije koji su direktno pogođeni promenom, što rezultuje boljim performansama, jednostavnijim kodom i jasnijom strukturom u poređenju sa tradicionalnim obrascima reaktivnosti.
 
+#### Promena vrednosti signala
+
+Vrednost _writable signala_ može da se promeni na 2 načina:
+
+- set(new value): nova vrednost zamenjuje postojeću vrednost signala;
+- update(fn): koristi se kada nova vrednost zavisi od prethodnog stanja.
+
+```typescript
+//set
+ searchPattern = signal<string>('');
+ searchPattern.set(pattern)
+
+ //update
+ orders = signal<Dictionary<Order>>({});
+ addToCart(product: Product, quantity: Maybe<number> = null): void {
+  const existingOrder: Maybe<Order> = this.orders()[product.id];
+  const resolvedQuantity = quantity ?? (existingOrder?.quantity ?? 0) + 1;
+
+  this.orders.update((prev) => ({
+    ...prev,
+    [product.id]: {
+      product,
+      quantity: resolvedQuantity,
+    },
+  }));
+ }
+```
+
 #### Upotreba Angular Signals u _Shopping Cart_ aplikaciji
 
 U okviru aplikacije, Angular Signals su korišćeni za upravljanje lokalnim stanjem i jednostavnom UI logikom, gde nije bilo potrebe za kompleksnim asinhronim tokovima podataka.
@@ -186,7 +215,7 @@ export class OrderService {
 }
 ```
 
-> U ovom primeru koristi se _writable signal orders_ za čuvanje stanja porudžbina. Promena vrednosti signala vrši se pomoću metode **update**, čime se stanje ažurira nepromenljivo, a Angular automatski detektuje promene i ažurira korisnički interfejs.
+> U ovom primeru koristi se _writable signal orders_ za čuvanje stanja porudžbina. Promena vrednosti signala vrši se pomoću metode **update**, čime se stanje ažurira, a Angular automatski detektuje promene i ažurira korisnički interfejs.
 
 ```typescript
  private orderService = inject(OrderService);
@@ -256,6 +285,13 @@ Pojavom Angular Signals pojavila su se očekivanja da bi oni mogli u potpunosti 
 Angular Signals su korišćeni za upravljanje lokalnim stanjem aplikacije i izvedenim vrednostima, kao što su stanje porudžbina (orders) i ukupan iznos (total), gde je jednostavnost i direktna povezanost sa UI-jem od ključnog značaja. Sa druge strane, RxJS je iskorišćen u scenarijima koji uključuju tokove događaja i asinhronu obradu, kao što je funkcionalnost pretraživanja proizvoda, gde su RxJS operatori omogućili kontrolu nad tokom i transformacijom podataka.
 
 Ovi primeri pokazuju da Angular Signals ne zamenjuju RxJS, već ga dopunjuju, pri čemu kombinovana upotreba omogućava čistiji, čitljiviji i efikasniji kod.
+
+<h2 id="rxjs-i-signali-zajedno">RxJS i signali zajedno</h2>
+
+Važno je naglasiti da Angular Signals nisu zamišljeni kao zamena za RxJS.
+Naprotiv — oni su dizajnirani da rade zajedno. Funkcije _toSignal_ i _toObservable_ upravo to omogućavaju — da se asinhroni tokovi i stanje aplikacije povežu na jednostavan i čitljiv način.
+
+> [Videti primer](#pretrazivanje-proizvoda)
 
 ## Arhitektura aplikacije
 
@@ -366,6 +402,7 @@ _Videti kompatibilne pakete za Angular verziju 21 (korišćena u projektu): (htt
 
 - Preporučeno (projekt koristi Yarn): `yarn install`
 - Alternativno (ako koristite npm): `npm install`
+- Instalacija JSON Servera: `yarn add json-server`
 
 3. Pokretanje JSON Server-a (mock API)
 
